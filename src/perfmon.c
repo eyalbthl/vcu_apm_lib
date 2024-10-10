@@ -87,31 +87,29 @@ int perf_monitor_deinit(void) {
 	return ret;
 }
 
-unsigned long perf_monitor_get_rd_wr_cnt(enum Perf_APM port) {
-	unsigned long rd,wr,rd_wr_count;
+unsigned long perf_monitor_get_rd_wr_cnt(enum Perf_APM port, enum Perf_Operation op) {
+	unsigned long rd_wr_count;
 
 	switch (port) {
 	case E_APM0:
-		rd = vcu_apm_counter[E_APM0][E_READ_BYTE_CNT];
-		wr = vcu_apm_counter[E_APM0][E_WRITE_BYTE_CNT];
-		break;
 	case E_APM1:
-		rd = vcu_apm_counter[E_APM1][E_READ_BYTE_CNT];
-		wr = vcu_apm_counter[E_APM1][E_WRITE_BYTE_CNT];
-		break;
 	case E_APM2:
-		rd = vcu_apm_counter[E_APM2][E_READ_BYTE_CNT];
-		wr = vcu_apm_counter[E_APM2][E_WRITE_BYTE_CNT];
-		break;
 	case E_APM3:
-		rd = vcu_apm_counter[E_APM3][E_READ_BYTE_CNT];
-		wr = vcu_apm_counter[E_APM3][E_WRITE_BYTE_CNT];
+		switch (op) {
+		case E_READ_BYTE_CNT:
+		case E_WRITE_BYTE_CNT:
+			rd_wr_count = vcu_apm_counter[port][op];
+			break;
+
+		default:
+			return EXIT_FAIL;
+		}
 		break;
 
 	default:
 		return EXIT_FAIL;
 	}
-	rd_wr_count = rd + wr;
+
 	/* Convert beats to bytes transferred */
 	return rd_wr_count = rd_wr_count * 16;
 }

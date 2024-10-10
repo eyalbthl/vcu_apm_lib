@@ -45,7 +45,7 @@ enum Perf_APM {
 
 int perf_monitor_init(void);
 int perf_monitor_deinit(void);
-unsigned long perf_monitor_get_rd_wr_cnt(enum Perf_APM instance);
+unsigned long perf_monitor_get_rd_wr_cnt(enum Perf_APM instance, enum Perf_Operation op);
 
 #ifdef __cplusplus
 }
